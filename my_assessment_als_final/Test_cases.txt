@@ -1,0 +1,81 @@
+*** Authentication feature ***
+Authentication and user management (Test case ID001)  --> fully automated and passing tests
+    When the user inserts "<username>" to "user-name"
+    And the user inserts "<password>" to "password"
+    And press button by id "login-button"
+    Then wait for products page to be loaded "<errorCase>" or "<myMsg>"
+
+where input data:    
+    username:standard_user,   password:secret_sauce, Expected Result: Page should load
+    username:standard_user,   password:empty field,  Expected Result: Remain in login page --> Epic sadface: Password is required
+    username:empty field,     password:secret_sauce, Expected Result: Remain in login page --> Epic sadface: Username is required
+    username:locked_out_user, password:secret_sauce, Expected Result: Remain in login page --> Epic sadface: Sorry, this user has been locked out.
+    username:myRandom,        password:myRandom,     Expected Result: Remain in login page --> Epic sadface: Username and password do not match any user in this service
+
+
+
+*** Products page feature ***
+The products page appearance (Test case ID002)  --> fully automated and passing tests
+    Given the products page is displayed
+    Then the products count should be "6"
+    And all specific product links should be clickable
+    And all displayed products are available for adding to cart
+
+Sort items by price low to high (Test case ID003)  --> fully automated and passing tests (only one type of sort tested)
+    When select from sorting dropdown the "lohi"
+    Then i verify the the sort by price low to high has happened
+
+
+
+*** Add to cart feature ***
+Adding my displayed products to cart (Test case ID004)  --> fully automated and passing tests
+    When i add all the displayed product to cart
+    Then i verify the shopping cart badge to have the correct number
+
+Adding and removing products to cart (Test case ID005)  --> fully automated and passing tests
+    When i add a product to cart
+    Then i verify the shopping cart badge to be "1"
+    When i remove the product from cart
+    # Actually Checking the invisibility here 
+    Then i verify the shopping cart badge to be "0"
+
+
+
+*** Checkout feature ***
+# for simplicity reasons and as part of an assignment - just checking the sunny day scenario
+# the user is able to complete a purchase using a simple scenario inserting correct data
+
+# There are failed test cases when inserting data (name, surname, postal code), all these fields are accepting 
+# string values without constaints of length of the test for name and surname and check for accapting anly integers in postal code
+# Extra testing rather than the plain scenario, was not part of this assignment
+
+Check out (Test case ID006)  --> fully automated for the sunny day scenario and passing tests
+    When i add a product to cart
+    And click on the shopping cart
+    Then the cart contents should be loaded
+    When press button by id "checkout"
+    Then the checkout "info" page should be loaded
+    When the user inserts "thisIsMyName" to "first-name"
+    And the user inserts "thisIsMySurname" to "last-name"
+    And the user inserts "12345" to "postal-code"
+    And press button by id "continue"
+    Then the checkout "summary" page should be loaded
+    When press button by id "finish"
+    Then the checkout "complete" page should be loaded
+
+
+
+*** Butger Menu feature ***
+Burger Menu logout (Test case ID007)  --> fully automated and passing tests
+    When i select "Logout" from the burger Menu
+    Then authentication page is loaded
+
+Burger Menu about (Test case ID008)  --> fully automated and passing tests
+    When i select "About" from the burger Menu
+    Then genaral home page is loaded
+
+Burger Menu reset app (Test case ID009)  --> fully automated and failing tests
+    When i add all the displayed product to cart
+    When i select "Reset App State" from the burger Menu
+    Then i verify the shopping cart badge to be "0"
+    And all displayed products are available for adding to cart
